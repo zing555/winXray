@@ -60,14 +60,14 @@ onPacUpdated = function(){
 }
 
 subscribe("pacServer.restarted",function(pacPort){
-    onPacUpdated()
+	onPacUpdated()
 }) 
 
 subscribe("sysProxy.modeChanged",function(mode){
-    if(mode==="mode"){
+	if(mode==="mode"){
 		winform.editPacUrl.text = xray.pacServer.getUrl();
 		winform.editLanPacUrl.text = xray.pacServer.getUrl(true);	
-    }
+	}
 }) 
 
 import xray.core;
@@ -80,11 +80,11 @@ var onInboundsUpdated = function(){
 }
 
 subscribe("config.core.changed",function(){
-    onInboundsUpdated();
+	onInboundsUpdated();
 })  
 
 subscribe("xrayCore.restarted",function(socksProxyPort,httpProxPort){
-    onInboundsUpdated();
+	onInboundsUpdated();
 })  
 
 import win.reg;
@@ -126,7 +126,7 @@ winform.btnUpdate.oncommand = function(id,event){
 	} 
 	client.close(); 
 	
-  
+	
 	if(winform.chkEnableGitConfigGithub.checked!=config.proxy.enableGitConfigGithub){
 		config.proxy.enableGitConfigGithub = winform.chkEnableGitConfigGithub.checked;
 			
@@ -162,10 +162,10 @@ winform.btnUpdate.oncommand = function(id,event){
 		config.core.default.inbounds[2]["listen"]= listen;
 		restartCore = true;
 	}			 
-    
-    config.core.save();
-    publish("config.inbounds.changed");
-    if(restartCore) {
+	
+	config.core.save();
+	publish("config.inbounds.changed");
+	if(restartCore) {
 		publish("uiCommand.restartXrayCore");    
 	}
 	
@@ -176,20 +176,20 @@ winform.btnUpdate.oncommand = function(id,event){
 	
 	config.proxy.save();
 	sysProxy.reset(true);
-    
-    import win.reg;
-    var reg = win.reg("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\");
-    if(!_STUDIO_INVOKED){
-    	if(winform.chkSystemStart.checked){
-    		reg.setSzValue("winXray",`"`+io._exepath+`" /tray`);
-    	}
-    	else {
-    		reg.delValue("winXray");
-    	}           	
-    } 
-    reg.close();
-    
-    winform.btnUpdate.disabledText = null;
+	
+	import win.reg;
+	var reg = win.reg("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\");
+	if(!_STUDIO_INVOKED){
+		if(winform.chkSystemStart.checked){
+			reg.setSzValue("winXray",`"`+io._exepath+`" /tray`);
+		}
+		else {
+			reg.delValue("winXray");
+		}           	
+	} 
+	reg.close();
+	
+	winform.btnUpdate.disabledText = null;
 	winform.msgOk("配置已更新",1200);
 }
 
@@ -199,7 +199,7 @@ winform.editLanPacUrl.editBox.readonly = true;
 import win.clip;
 import wsock.tcp.client;
 winform.editSocksPort.editBox.enablePopMenu(function(){
-    var lanIp = wsock.tcp.client.getLocalIp("www.baidu.com");
+	var lanIp = wsock.tcp.client.getLocalIp("www.baidu.com");
 	return {
 			{ "复制端口" + winform.editSocksPort.text;
 				function(id){ 
@@ -220,7 +220,7 @@ winform.editSocksPort.editBox.enablePopMenu(function(){
 } )
 
 winform.editHttpPort.editBox.enablePopMenu(function(){
-    var lanIp = wsock.tcp.client.getLocalIp("www.baidu.com");
+	var lanIp = wsock.tcp.client.getLocalIp("www.baidu.com");
 	return {
 			{ "复制端口" + winform.editHttpPort.text;
 				function(id){ 
@@ -263,14 +263,14 @@ winform.tbMaxTestServers.skin(style.trackbar);
 winform.tbMaxTestServers.progressPos = config.proxy.maxTestServers;
 winform.lbMaxTestServers.text = config.proxy.maxTestServers+"个服务器";
 winform.tbMaxTestServers.onPosChanged = function( pos,thumbTrack ){
-    if(pos>300){
-        winform.lbMaxTestServers.color = 0xFF;
-    	winform.lbMaxTestServers.text = pos+"个服务器( 数值太大可能导致卡顿 )";
-    }
-    else {
-        winform.lbMaxTestServers.color = 0;
-    	winform.lbMaxTestServers.text = pos+"个服务器";
-    }
+	if(pos>300){
+		winform.lbMaxTestServers.color = 0xFF;
+		winform.lbMaxTestServers.text = pos+"个服务器( 数值太大可能导致卡顿 )";
+	}
+	else {
+		winform.lbMaxTestServers.color = 0;
+		winform.lbMaxTestServers.text = pos+"个服务器";
+	}
 	
 	config.proxy.maxTestServers = pos;
 	config.proxy.save();

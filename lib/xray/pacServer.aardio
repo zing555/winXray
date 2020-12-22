@@ -10,7 +10,7 @@ $serverMain = ..wsock.tcp.simpleHttpServer.mainThread(
 	function(response,request,session){ 
 
 		if(request.path=="/proxy.pac"){
-            response.contentType = "application/x-ns-proxy-autoconfig";
+			response.contentType = "application/x-ns-proxy-autoconfig";
 			
 			var pacData = ..string.load(pacPath);
 			var proxPorts = inboundPort.get();
@@ -20,10 +20,10 @@ $serverMain = ..wsock.tcp.simpleHttpServer.mainThread(
 			}
 			
 			var reps = ..string.replace(pacData,"var\s+proxy\s+=\s+%''","var proxy = 'SOCKS "+ request.environ.SERVER_NAME +":"+proxPorts.socksProxy +"'"); 
-            if(useHttpProxy.get()){
+			if(useHttpProxy.get()){
 				reps = ..string.replace(pacData,"var\s+proxy\s+=\s+%''","var proxy = 'PROXY "+ request.environ.SERVER_NAME +":"+proxPorts.httpProxy +"'"); 
-            }
- 
+			}
+	
 			response.write(reps);  
 		}  
 	} 	
@@ -66,14 +66,14 @@ restart = function(){
 	if(currentIp!==..config.core.default.inbounds[[1]][["listen"]] 
 		|| currentPort != pacPort ){
 		$serverMain.stop();
- 
+	
 		var ok,err = $serverMain.start(
-            ..config.core.default.inbounds[[1]][["listen"]] : "127.0.0.1",pacPort );
+			..config.core.default.inbounds[[1]][["listen"]] : "127.0.0.1",pacPort );
 		if(!ok){ 
 			..publish("uiCommand.print","启动PAC服务器失败",err)
 			return false,err;
 		}
-		 
+			
 		..publish("uiCommand.print","PAC服务器已启动",getUrl())
 		..publish("pacServer.restarted",pacPort);
 	}
@@ -107,8 +107,8 @@ getUrl = function(localIp){
 	
 	var tUrl = ..inet.url.split(url);
 	if(!localIp){
-	 	tUrl.host = "127.0.0.1"
- 	}
+			tUrl.host = "127.0.0.1"
+		}
 	else {
 		tUrl.host = ..wsock.tcp.client.getLocalIp("www.baidu.com");
 	}

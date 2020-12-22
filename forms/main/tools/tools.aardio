@@ -40,15 +40,15 @@ winform.btnYoutube.oncommand = function(id,event){
 	frmYoutube = winform.loadForm("\forms\main\tools\youtube.aardio");
 	frmYoutube.show();
 }
- 
+	
 import process;
 winform.btnGitHub.skin(style.plainButton)
 winform.btnGitHub.oncommand = function(id,event){
-    if(_STUDIO_INVOKED){
-    	winform.msgboxErr("请在发布后运行此功能");
-    	return;
-    }
-    
+	if(_STUDIO_INVOKED){
+		winform.msgboxErr("请在发布后运行此功能");
+		return;
+	}
+	
 	process.execute(io._exepath,"/github","runas");
 }
 
@@ -59,12 +59,12 @@ winform.btnAardio.oncommand = function(id,event){
 
 winform.btnUpdateSystemTime.skin(style.plainButton)
 winform.btnUpdateSystemTime.oncommand = function(id,event){
-    if(_STUDIO_INVOKED){
-    	winform.msgboxErr("请在发布后运行此功能");
-    	return;
-    }
-    
-    winform.btnUpdateSystemTime.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	if(_STUDIO_INVOKED){
+		winform.msgboxErr("请在发布后运行此功能");
+		return;
+	}
+	
+	winform.btnUpdateSystemTime.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
 	if( process.executeWait(io._exepath,"/updateTime","runas") ){
 		winform.btnUpdateSystemTime.disabledText = null;
 		winform.btnUpdateSystemTime.text = '时间已同步'
@@ -80,23 +80,23 @@ winform.btnUpdateSystemTime.oncommand = function(id,event){
 
 winform.btnDnsFlush.skin(style.plainButton)
 winform.btnDnsFlush.oncommand = function(id,event){
-    winform.btnDnsFlush.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	winform.btnDnsFlush.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
 
-    import process.popen;
+	import process.popen;
 	var prcs = process.popen(,"ipconfig /flushdns");
 	var str = prcs.read(-1)
 	
-    var dnsapi = ..raw.loadDll("dnsapi.dll");
+	var dnsapi = ..raw.loadDll("dnsapi.dll");
 	dnsapi.DnsFlushResolverCacheB();
 		
 	winform.msgInfo(str);
-    winform.btnDnsFlush.disabledText = null;
+	winform.btnDnsFlush.disabledText = null;
 }
 
 winform.btnUpdateXrayCore.skin(style.plainButton)
 winform.btnUpdateXrayCore.oncommand = function(id,event){
-    winform.btnUpdateXrayCore.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'};
-    
+	winform.btnUpdateXrayCore.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'};
+	
 	import xray.core;
 	var versionTag = xray.core.updateCore();
 	if( versionTag ){
@@ -118,21 +118,21 @@ winform.btnWubiLex.oncommand = function(id,event){
 winform.editSshHost.setCueBannerText("root@0.0.0.0:22")
 winform.btnSshInstall.skin(style.plainButton)
 winform.btnSshInstall.oncommand = function(id,event){
-    
-    if(_STUDIO_INVOKED){
-    	winform.msgErr("请在发布后运行此功能");
-    	return;
-    }
-    
-    config.ui.sshServer = winform.editSshHost.text;
-    config.ui.save();
-    
-    winform.btnSshInstall.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
-    
-    var server = winform.editSshHost.text;
-    if( ! ..string.indexOf(server,"@") ){
-    	server = "root@" + server;
-    }
+	
+	if(_STUDIO_INVOKED){
+		winform.msgErr("请在发布后运行此功能");
+		return;
+	}
+	
+	config.ui.sshServer = winform.editSshHost.text;
+	config.ui.save();
+	
+	winform.btnSshInstall.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	
+	var server = winform.editSshHost.text;
+	if( ! ..string.indexOf(server,"@") ){
+		server = "root@" + server;
+	}
 	process.execute(io._exepath,"/sshInstall " + server);
 	win.delay(1000);
 	winform.btnSshInstall.disabledText = null;
@@ -145,20 +145,20 @@ if(config.ui.sshServer){
 
 winform.btnSshInstallKey.skin(style.plainButton)
 winform.btnSshInstallKey.oncommand = function(id,event){
-    if(_STUDIO_INVOKED){
-    	winform.msgErr("请在发布后运行此功能");
-    	return;
-    }
-    
-    config.ui.sshServer = winform.editSshHost.text;
-    config.ui.save();
-    
-    winform.btnSshInstall.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
-    
-    var server = winform.editSshHost.text;
-    if( ! ..string.indexOf(server,"@") ){
-    	server = "root@" + server;
-    }
+	if(_STUDIO_INVOKED){
+		winform.msgErr("请在发布后运行此功能");
+		return;
+	}
+	
+	config.ui.sshServer = winform.editSshHost.text;
+	config.ui.save();
+	
+	winform.btnSshInstall.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'}
+	
+	var server = winform.editSshHost.text;
+	if( ! ..string.indexOf(server,"@") ){
+		server = "root@" + server;
+	}
 	process.execute(io._exepath,"/sshInstallKey " + server);
 	win.delay(1000);
 	winform.btnSshInstall.disabledText = null;
@@ -166,10 +166,10 @@ winform.btnSshInstallKey.oncommand = function(id,event){
 
 winform.btnCreateLnk.skin(style.plainButton)
 winform.btnCreateLnk.oncommand = function(id,event){
-    if(_STUDIO_INVOKED){
-    	return winform.msgboxErr("请在发布后使用此功能")
-    }
-    
+	if(_STUDIO_INVOKED){
+		return winform.msgboxErr("请在发布后使用此功能")
+	}
+	
 	import fsys.lnk;  
 	var lnk = fsys.lnk(); 
 	lnk.description = "winXray(Xray/V2Ray、Shadowsocks、Trojan通用客户端 )"  
@@ -211,9 +211,9 @@ winform.btnTestSpeed.oncommand = function(id,event){
 			restClient._http.setTimeouts(1000,2000,2000);
 			restClient.get("https://www.google.com/generate_204");
 			var lastStatusCode = restClient.lastStatusCode; 
- 			
+				
 			if( lastStatusCode == 204 ){
-				 
+					
 				var ipip,err  = restClient.get("http://myip.ipip.net");
 				if(ipip){
 					ipip = ..string.match(ipip,"\d+\.\d+\.\d+\.\d+\A+");
@@ -250,7 +250,7 @@ onActiveOutbound = function(address){
 		winform.lbCurrentProxyLocation.text = "当前活动的代理服务器：" + address;
 	}	
 } 
- 
+	
 subscribe("activeOutbound",function(address){ 
 	onActiveOutbound(address)
 } )

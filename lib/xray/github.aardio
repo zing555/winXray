@@ -4,18 +4,18 @@ import process.popen;
 namespace xray.github;
 
 setProxy = function(enableProxy){
-   if(enableProxy===null){
-   		enableProxy = (..config.proxy.mode === "pac") || (..config.proxy.mode === "proxy")
-   		
-   		if(!..config.proxy.enableGitConfigGithub){
-    		return;
-    	}
-   } 
+	if(enableProxy===null){
+			enableProxy = (..config.proxy.mode === "pac") || (..config.proxy.mode === "proxy")
+			
+			if(!..config.proxy.enableGitConfigGithub){
+			return;
+		}
+	} 
 
-   var socksPort = ..xray.core.socksProxyPort;
-   if(!socksPort && enableProxy) return; 
+	var socksPort = ..xray.core.socksProxyPort;
+	if(!socksPort && enableProxy) return; 
 
-    var git;
+	var git;
 	if(enableProxy){
 		git = ..process.popen("git config --global http.https://github.com.proxy socks5://127.0.0.1:" + socksPort)
 		

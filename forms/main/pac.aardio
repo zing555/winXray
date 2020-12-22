@@ -96,7 +96,7 @@ winform.loadPacToEdit = function(str){
 
 winform.btnUpdate.oncommand = function(id,event){
 	winform.btnUpdate.disabledText = {'\uF254';'\uF251';'\uF252';'\uF253';'\uF250'};
- 
+	
 	thread.invoke( 
 		function(winform){ 
 			import web.rest.github; 
@@ -130,7 +130,7 @@ winform.savePacToFile = function(){
 		winform.btnSave.disabledText = null;
 		return winform.msgErr("直连域名配置格式错误");
 	}
-	 
+		
 	xray.pacServer.savePacText(web.json.stringify({{direct;proxy}},true));
 	
 	winform.editPacDirect.modified = false;
@@ -150,7 +150,7 @@ winform.btnSave.oncommand = function(id,event){
 		function(winform){
 			sleep(300)
 			winform.savePacToFile();
-            
+			
 		},winform
 	)
 }
@@ -163,7 +163,7 @@ winform.btnReset.oncommand = function(id,event){
 			import xray.pacServer;
 			winform.loadPacToEdit(xray.pacServer.loadPacText()); 
 			
-            winform.btnReset.disabledText = null;
+			winform.btnReset.disabledText = null;
 			winform.btnSave.disabled = true;
 			winform.btnReset.disabled = true;
 			winform.msgOk("已恢复到当前PAC配置")
@@ -206,7 +206,7 @@ winform.editPacDirect.wndproc = function(hwnd,message,wParam,lParam){
 		
 		var line = winform.editPacDirect.lineText();
 		var domain = string.match(line,`\"(.+)\"`); 
-		 
+			
 		if(domain){
 			winform.editPacDomain.text = domain;
 			winform.radioDirect.checked = true;
@@ -224,7 +224,7 @@ winform.editPacProxy.wndproc = function(hwnd,message,wParam,lParam){
 		
 		var line = winform.editPacProxy.lineText();
 		var domain = string.match(line,`\"(.+)\"`); 
-		 
+			
 		if(domain){
 			winform.editPacDomain.text = domain;
 			winform.radioProxy.checked = true;
@@ -275,7 +275,7 @@ winform.editPacDirect.enablePopMenu(function(){
 				
 				var count,ignored = 0,0;
 				for domain in string.gmatch(str,"\w<[\w-_]*\.>+\w{1,8}") { 
-					 
+						
 					if(!table.indexOf(proxy,domain) && table.indexOf(direct,domain)  ){
 						ignored++;
 						continue;
@@ -341,7 +341,7 @@ winform.editPacProxy.enablePopMenu(function(){
 				
 				var count,ignored = 0,0;
 				for domain in string.gmatch(str,"\w<[\w-_]*\.>+\w{1,8}") { 
-					 
+						
 					if(!table.indexOf(direct,domain) && table.indexOf(proxy,domain)  ){
 						ignored++;
 						continue;
@@ -383,16 +383,16 @@ winform.editPacProxy.enablePopMenu(function(){
 import win.ui.accelerator;
 var accelerator = win.ui.accelerator({
 
-    { 
-        ctrl = true; vkey = 'F'#; 
-        oncommand = function() findDlgDirect.find(winform.currentEditPac.selText); 
-    };  
-    
-    { 
-        ctrl = true; vkey = 'H'#; 
-        oncommand = function() findDlgDirect.replace(winform.currentEditPac.selText); 
-    };  
-    
+	{ 
+		ctrl = true; vkey = 'F'#; 
+		oncommand = function() findDlgDirect.find(winform.currentEditPac.selText); 
+	};  
+	
+	{ 
+		ctrl = true; vkey = 'H'#; 
+		oncommand = function() findDlgDirect.replace(winform.currentEditPac.selText); 
+	};  
+	
 },winform );
 
 winform.btnDeleteDomain.oncommand = function(id,event){
@@ -466,20 +466,20 @@ winform.btnAddDomain.oncommand = function(id,event){
 }
 
 winform.onClose = function(hwnd,message,wParam,lParam){
-    if(winform.editPacDirect.modified||winform.editPacProxy.modified){
-    	winform.btnUpdate.disabled = true;
-    	
-    	if(!winform.msgAsk("PAC配置已修改但尚未保存，确定要退出并放弃更改吗？")){
-    		return true;
-    	}
-    }
+	if(winform.editPacDirect.modified||winform.editPacProxy.modified){
+		winform.btnUpdate.disabled = true;
+		
+		if(!winform.msgAsk("PAC配置已修改但尚未保存，确定要退出并放弃更改吗？")){
+			return true;
+		}
+	}
 }
 
 winform.onDestroy = function(){
-    if(mainForm){
-    	win.setActive(mainForm.hwnd);
-    	win.setForeground(mainForm.hwnd);
-    }
+	if(mainForm){
+		win.setActive(mainForm.hwnd);
+		win.setForeground(mainForm.hwnd);
+	}
 }
 
 import win.clip;
@@ -507,7 +507,7 @@ winform.onActivate = function(state,hwndOther,minimized){
 
 import inet.url;
 winform.editPacDomain.editBox.onChange = function(){ 
-    var url = owner.text;
+	var url = owner.text;
 	if(string.startWith(url,"http:",true) || string.startWith(url,"https:",true) ){
 		var tUrl = inet.url.split(url);
 		if(tUrl && #tUrl.host){
@@ -516,7 +516,7 @@ winform.editPacDomain.editBox.onChange = function(){
 		} 
 	}
 }
- 
+	
 winform.enableDpiScaling();
 winform.show();
 win.loopMessage();

@@ -175,17 +175,27 @@ winform.editOutbounds.enablePopMenu(function(){
 					if(#outbounds){ 
 						var json = strEditBounds;
 						if( (!#json) || ..string.match(json,"%\[\]")){
-							var cfg,err = ..table.array();
+							var cfgOutbounds,err = ..table.array();
 							if(#json){
-								cfg,err= web.json.tryParse(strEditBounds);
-								if(!cfg){
+								cfgOutbounds,err= web.json.tryParse(strEditBounds);
+								if(!cfgOutbounds){
 									winform.editOutbounds.showErrorTip(,string.concat("当前配置存在JSON语法错误 ",err));
 									return;
 								}	
 							} 
 							
-							..table.append(cfg,outbounds);
-							winform.editOutbounds.text = ..web.json.stringifyArray(cfg,true,false,true);
+							var subscribeUrl = outbounds[1].subscribeUrl;
+							if(subscribeUrl){
+								for(i=#cfgOutbounds;1;-1){
+									var outbound = cfgOutbounds[i] 
+									if(outbound.subscribeUrl==url){
+										..table.remove(	cfgOutbounds,i );
+									}
+								}
+							}
+							
+							..table.append(cfgOutbounds,outbounds);
+							winform.editOutbounds.text = ..web.json.stringifyArray(cfgOutbounds,true,false,true);
 						}
 						else {
 							var str = xray.outbounds.exportSharedLinks(outbounds);
@@ -209,7 +219,7 @@ winform.editOutbounds.enablePopMenu(function(){
 		}
 		
 		if( (!#strEditBounds) || ..string.match(strEditBounds,"%\[\]")){
-			menu[3] = { "更新订阅源";
+			menu[3] = { "更新当前配置内订阅源";
 				function(id){ 
 					var cfg,err = ..table.array();
 					
@@ -221,7 +231,7 @@ winform.editOutbounds.enablePopMenu(function(){
 							return;
 						}
 					}
-					 
+						
 					var subscribeUrls = {}
 					for(i=#cfg;1;-1){
 						var outbound = cfg[i] 
@@ -241,7 +251,7 @@ winform.editOutbounds.enablePopMenu(function(){
 							return;
 						} 
 					}
-					 
+						
 					var count = 0;
 					for(url,v in subscribeUrls){ 
 						var outbounds = xray.outbounds.importFromString(url);
@@ -272,13 +282,23 @@ winform.editOutbounds.enablePopMenu(function(){
 			menu[4] = {}	
 			menu[5] = { "转换为 vmess、vless、trojan、trojan-go、ss 分享链接";
 				function(id){ 
-					var cfg,err = web.json.tryParse(strEditBounds);
-					if(!cfg){
+					var cfgOutbouds,err = web.json.tryParse(strEditBounds);
+					if(!cfgOutbouds){
 						winform.editOutbounds.showErrorTip(,string.concat("JSON语法错误 ",err));
 						return;
 					}
-		
-					var str = xray.outbounds.exportSharedLinks(cfg);
+					
+					for(i,ob in cfgOutbouds){
+						if(ob.subscribeUrl){
+							if(!winform.msgAsk('当前配置包含订阅源,\n转换为分享链接所有服务器与订阅源将解除关联,\n按确定继续操作，按取消中止。')){
+								return;
+							}
+							
+							break;
+						} 
+					}
+					
+					var str = xray.outbounds.exportSharedLinks(cfgOutbouds);
 					if(str){ 
 						winform.editOutbounds.text = str;
 						winform.editOutbounds.modified = true;
